@@ -16,3 +16,7 @@ class PWebFRConfig:
     SWAGGER_JSON_URL = "/pweb-swagger-json"
     SWAGGER_UI_URL = "/pweb-swagger-ui"
     SWAGGER_DEFAULT_TAG_NAME: str = "Common"
+    SWAGGER_TITLE: str = "PWeb Swagger"
+    SWAGGER_APP_VERSION: str = "1.0.0"
+
+    ENABLED_JWT_AUTH: bool = True
