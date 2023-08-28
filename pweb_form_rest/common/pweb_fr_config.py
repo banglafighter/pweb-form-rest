@@ -15,3 +15,4 @@ class PWebFRConfig:
     SWAGGER_AUTH_PASSWORD: str = "pweb12"
     SWAGGER_JSON_URL = "/pweb-swagger-json"
     SWAGGER_UI_URL = "/pweb-swagger-ui"
+    SWAGGER_DEFAULT_TAG_NAME: str = "Common"

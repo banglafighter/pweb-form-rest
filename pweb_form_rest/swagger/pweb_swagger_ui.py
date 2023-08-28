@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 from pweb_form_rest.common.pweb_fr_config import PWebFRConfig
+from pweb_form_rest.swagger.pweb_sd_processor import PWebSDProcessor
 
 
 class PWebSwaggerUI:
@@ -27,7 +28,11 @@ class PWebSwaggerUI:
         return render_template('pweb-swagger-ui.html', config=PWebFRConfig)
 
     def swagger_json(self):
-        pass
+        auth = self.check_auth()
+        if auth:
+            return auth
+        decorator_processor = PWebSDProcessor(self._pweb_app)
+        action_definitions = decorator_processor.get_action_definitions()
 
     def check_auth(self):
         if PWebFRConfig.ENABLE_SWAGGER_AUTH:
