@@ -1,2 +1,3 @@
 from pweb_form_rest.schema.pweb_rest_schema import APIBase
 from pweb_form_rest.common.pweb_custom_field import FileField, EnumField, CustomNestedField
+from pweb_form_rest.swagger.pweb_swagger_decorator import pweb_endpoint, pweb_paginate_endpoint, pweb_upload_endpoint
