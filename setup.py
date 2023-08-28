@@ -9,7 +9,11 @@ env = os.environ.get('source')
 
 
 def get_dependencies():
-    dependency = []
+    dependency = [
+        'Marshmallow',
+        'Apispec',
+        'marshmallow-sqlalchemy'
+    ]
 
     if env and env == "dev":
         return dependency
