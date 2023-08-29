@@ -9,6 +9,7 @@ class PWebSwaggerUI:
 
     def register(self, pweb_app):
         self._pweb_app = pweb_app
+        self.init_swagger_blueprint()
 
     def init_swagger_blueprint(self):
         if PWebFRConfig.ENABLE_SWAGGER_UI and self._pweb_app:
