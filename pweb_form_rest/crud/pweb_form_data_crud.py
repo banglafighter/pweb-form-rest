@@ -1,0 +1,2 @@
+class FormDataCRUD:
+    pass

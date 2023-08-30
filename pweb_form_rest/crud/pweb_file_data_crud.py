@@ -1,0 +1,2 @@
+class FileDataCRUD:
+    pass

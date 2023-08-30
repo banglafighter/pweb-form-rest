@@ -1,4 +1,5 @@
 from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemySchema
 
 
 class APIBase(Schema):
@@ -40,3 +41,21 @@ class Pagination(APIBase):
 
 class APIPaginateResponse(APIDataListResponse):
     pagination = fields.Nested(Pagination())
+
+
+class PWebDataDTO(object, APIBase):
+    pass
+
+
+class PWebOrmDTO(PWebDataDTO, SQLAlchemySchema):
+    pass
+
+
+class PWebRestDTO(PWebOrmDTO):
+    class Meta:
+        ordered = True
+
+    id = fields.Integer(dump_only=True)
+    created = fields.DateTime(dump_only=True)
+    updated = fields.DateTime(dump_only=True)
+    uuid = fields.UUID(dump_only=True)

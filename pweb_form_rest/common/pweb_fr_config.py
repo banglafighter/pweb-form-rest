@@ -7,6 +7,7 @@ class PWebFRConfig:
     SEARCH_FIELD_PARAM_NAME: str = "search"
     SORT_DEFAULT_ORDER_NAME: str = "desc"
     SORT_DEFAULT_FIELD_NAME: str = "id"
+    TOTAL_ITEM_PER_PAGE: int = 25
 
     # Swagger UI Config
     ENABLE_SWAGGER_UI: bool = True
@@ -20,3 +21,8 @@ class PWebFRConfig:
     SWAGGER_APP_VERSION: str = "1.0.0"
 
     ENABLED_JWT_AUTH: bool = True
+
+    # Messages
+    INVALID_REQUEST_DATA = "Invalid Request Data"
+    VALIDATION_ERROR = "Validation Error!"
+    UNKNOWN_ERROR = "Unknown Error Occurred!"
