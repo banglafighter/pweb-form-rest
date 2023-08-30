@@ -112,17 +112,24 @@ class PWebCRUD:
                 return query.filter(or_(*like))
         return query
 
-    def list(self,
-             model: PWebBaseModel, query=None, search_fields: list = None, enable_pagination: bool = True, enable_sort: bool = True,
-             is_deleted=False, sort_default_field=PWebFRConfig.SORT_DEFAULT_FIELD_NAME, sort_default_order=PWebFRConfig.SORT_DEFAULT_ORDER_NAME,
-             item_per_page=PWebFRConfig.TOTAL_ITEM_PER_PAGE, search_text: str = None
+    def list(self, model: PWebBaseModel, query=None, search_fields: list = None, enable_pagination: bool = True, enable_sort: bool = True,
+             is_deleted=False, sort_field=None, sort_order=None, item_per_page=None, search_text: str = None
              ):
         if not query:
             query = model.query
         query = query.filter(getattr(model, "isDeleted") == is_deleted)
 
+        if not sort_field:
+            sort_field = PWebFRConfig.SORT_DEFAULT_FIELD_NAME
+
+        if not sort_order:
+            sort_order = PWebFRConfig.SORT_DEFAULT_ORDER_NAME
+
+        if not item_per_page:
+            item_per_page = PWebFRConfig.TOTAL_ITEM_PER_PAGE
+
         if enable_sort:
-            query = self.set_sort_order(model, query=query, default_field=sort_default_field, default_order=sort_default_order)
+            query = self.set_sort_order(model, query=query, default_field=sort_field, default_order=sort_order)
 
         if search_fields:
             query = self.set_search(model, query=query, search_fields=search_fields, search_text=search_text)
