@@ -16,7 +16,7 @@ class RESTDataCRUD(PWebCRUDCommon):
     def create(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = "Successfully created!", data: dict = None):
         if not data:
             data = self.get_json_data(request_dto)
-        model = self.save(request_dto, data)
+        model = self.save(data=data, request_dto=request_dto)
         return self.message_or_data_response(model, response_dto, response_message)
 
     def details(self, model_id: int, response_dto: PWebDataDTO, query=None):

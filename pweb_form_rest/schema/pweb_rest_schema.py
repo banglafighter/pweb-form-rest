@@ -43,7 +43,7 @@ class APIPaginateResponse(APIDataListResponse):
     pagination = fields.Nested(Pagination())
 
 
-class PWebDataDTO(object, APIBase):
+class PWebDataDTO(APIBase, object):
     pass
 
 

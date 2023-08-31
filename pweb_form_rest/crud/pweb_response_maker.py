@@ -1,4 +1,5 @@
 import json
+import typing as t
 from flask import make_response, send_file
 from pweb_form_rest.data.pweb_response_data import PWebMessageResponse, PWebDataResponse, PWebPagination, \
     PWebPaginateResponse
@@ -43,7 +44,7 @@ class PWebHTTPResponse:
 
 class ResponseMaker:
     headers: dict = None
-    http_response: PWebHTTPResponse()
+    http_response: PWebHTTPResponse = PWebHTTPResponse()
 
     def add_header(self, key: str, value):
         if not self.headers:
