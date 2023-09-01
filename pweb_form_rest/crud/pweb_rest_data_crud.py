@@ -8,11 +8,6 @@ class RESTDataCRUD(PWebCRUDCommon):
     def __init__(self, model: PWebBaseModel):
         self.model = model
 
-    def message_or_data_response(self, model, response_dto: PWebDataDTO = None, response_message: str = None):
-        if not response_dto:
-            return self.response_maker.success_message(response_message)
-        return self.response_maker.data_response(model, response_dto)
-
     def create(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = "Successfully created!", data: dict = None):
         if not data:
             data = self.get_json_data(request_dto)

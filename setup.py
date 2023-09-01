@@ -18,7 +18,7 @@ def get_dependencies():
     if env and env == "dev":
         return dependency
 
-    return dependency + ["ppy-common", "pweb-orm"]
+    return dependency + ["ppy-common", "pweb-orm", "ppy-file-text"]
 
 
 setup(

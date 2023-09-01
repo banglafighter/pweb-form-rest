@@ -26,3 +26,8 @@ class PWebFRConfig:
     INVALID_REQUEST_DATA = "Invalid Request Data"
     VALIDATION_ERROR = "Validation Error!"
     UNKNOWN_ERROR = "Unknown Error Occurred!"
+
+    # File Upload
+    FILE_SIZE_NOT_MATCH = "File size is bigger than allowed"
+    INVALID_FILE_EXTENSION = "Invalid uploaded file"
+    INVALID_FILE_UPLOAD_PATH = "Invalid upload path"

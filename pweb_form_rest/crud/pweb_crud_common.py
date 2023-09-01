@@ -9,6 +9,11 @@ class PWebCRUDCommon:
     pweb_crud: PWebCRUD = PWebCRUD()
     response_maker: ResponseMaker = ResponseMaker()
 
+    def message_or_data_response(self, model, response_dto: PWebDataDTO = None, response_message: str = None):
+        if not response_dto:
+            return self.response_maker.success_message(response_message)
+        return self.response_maker.data_response(model, response_dto)
+
     def get_json_data(self, data_dto: PWebDataDTO, is_validate=True, load_only=False):
         return self.pweb_crud.get_json_data(data_dto=data_dto, is_validate=is_validate, load_only=load_only)
 
