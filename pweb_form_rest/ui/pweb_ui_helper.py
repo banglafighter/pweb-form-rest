@@ -1,5 +1,6 @@
 import json
 from flask import get_flashed_messages, render_template
+from pweb_form_rest.common.pweb_fr_config import PWebFRConfig
 from pweb_form_rest.crud.pweb_request_data import RequestData
 from pweb_form_rest.form.pweb_form import PWebForm
 
@@ -43,12 +44,12 @@ class UIUtil:
         return self.request_data.get_query_args_value("search", "")
 
 
-class PWebUIHelper:
+class PWebSSRUIHelper:
 
     def get_helper(self) -> dict:
         return {}
 
-    def render(self, name, params: dict = None, form: PWebForm = None):
+    def render(self, view_name, params: dict = None, form: PWebForm = None):
         if form and form.definition:
             params["form"] = form.definition
 
@@ -58,4 +59,15 @@ class PWebUIHelper:
         if helper:
             params.update(helper)
         params["util"] = UIUtil()
-        return render_template(f"{name}.html", **params)
+        return render_template(f"{view_name}.html", **params)
+
+    @staticmethod
+    def init(ssr_ui_helper: "PWebSSRUIHelper" = None):
+        if ssr_ui_helper:
+            return ssr_ui_helper
+        elif PWebFRConfig.SSR_UI_HELPER and isinstance(PWebFRConfig.SSR_UI_HELPER, PWebSSRUIHelper):
+            return PWebFRConfig.SSR_UI_HELPER
+        return PWebSSRUIHelper()
+
+
+ssr_render = PWebSSRUIHelper().init()

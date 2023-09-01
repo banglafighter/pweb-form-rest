@@ -14,8 +14,8 @@ class PWebFRConfig:
     ENABLE_SWAGGER_AUTH: bool = False
     SWAGGER_AUTH_USERNAME: str = "pweb"
     SWAGGER_AUTH_PASSWORD: str = "pweb12"
-    SWAGGER_JSON_URL = "/pweb-swagger-json"
-    SWAGGER_UI_URL = "/pweb-swagger-ui"
+    SWAGGER_JSON_URL: str = "/pweb-swagger-json"
+    SWAGGER_UI_URL: str = "/pweb-swagger-ui"
     SWAGGER_DEFAULT_TAG_NAME: str = "Common"
     SWAGGER_TITLE: str = "PWeb Swagger"
     SWAGGER_APP_VERSION: str = "1.0.0"
@@ -23,11 +23,14 @@ class PWebFRConfig:
     ENABLED_JWT_AUTH: bool = True
 
     # Messages
-    INVALID_REQUEST_DATA = "Invalid Request Data"
-    VALIDATION_ERROR = "Validation Error!"
-    UNKNOWN_ERROR = "Unknown Error Occurred!"
+    INVALID_REQUEST_DATA: str = "Invalid Request Data"
+    VALIDATION_ERROR: str = "Validation Error!"
+    UNKNOWN_ERROR: str = "Unknown Error Occurred!"
 
     # File Upload
-    FILE_SIZE_NOT_MATCH = "File size is bigger than allowed"
-    INVALID_FILE_EXTENSION = "Invalid uploaded file"
-    INVALID_FILE_UPLOAD_PATH = "Invalid upload path"
+    FILE_SIZE_NOT_MATCH: str = "File size is bigger than allowed"
+    INVALID_FILE_EXTENSION: str = "Invalid uploaded file"
+    INVALID_FILE_UPLOAD_PATH: str = "Invalid upload path"
+
+    # Form Helper
+    SSR_UI_HELPER: "PWebSSRUIHelper" = None
