@@ -61,13 +61,10 @@ class PWebSSRUIHelper:
         params["util"] = UIUtil()
         return render_template(f"{view_name}.html", **params)
 
-    @staticmethod
-    def init(ssr_ui_helper: "PWebSSRUIHelper" = None):
-        if ssr_ui_helper:
-            return ssr_ui_helper
-        elif PWebFRConfig.SSR_UI_HELPER and isinstance(PWebFRConfig.SSR_UI_HELPER, PWebSSRUIHelper):
-            return PWebFRConfig.SSR_UI_HELPER
-        return PWebSSRUIHelper()
 
-
-ssr_render = PWebSSRUIHelper().init()
+def ssr_ui_render(view_name, params: dict = None, form: PWebForm = None, ssr_ui_helper: PWebSSRUIHelper = None):
+    if not ssr_ui_helper:
+        ssr_ui_helper = PWebSSRUIHelper()
+        if PWebFRConfig.SSR_UI_HELPER and isinstance(PWebFRConfig.SSR_UI_HELPER, PWebSSRUIHelper):
+            ssr_ui_helper = PWebFRConfig.SSR_UI_HELPER
+    return ssr_ui_helper.render(view_name=view_name, params=params, form=form)
