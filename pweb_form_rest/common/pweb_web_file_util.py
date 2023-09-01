@@ -24,7 +24,7 @@ class PWebWebFileUtil:
     @staticmethod
     def is_valid_file_size(file_object: FileStorage, max_size_kb):
         size = PWebWebFileUtil.get_file_size(file_object)
-        size_in_kb = size * 1000
+        size_in_kb = round(size / 1024, 4)
         if size_in_kb <= max_size_kb:
             return True
         return False
