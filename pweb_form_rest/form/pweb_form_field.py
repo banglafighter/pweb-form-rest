@@ -8,6 +8,7 @@ class FormField(object):
     required: bool = False
     placeholder = None
     errorText: str = None
+    isErrorTextOn: bool = True
     isError: bool = False
     helpText: str = None
     isWrapper: bool = True

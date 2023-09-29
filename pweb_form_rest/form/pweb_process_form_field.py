@@ -9,13 +9,33 @@ class ProcessFormFiled:
         form_field = self._set_field_default_value(declared_field_definition, form_field=form_field)
         form_field = self._process_metadata(declared_field_definition, form_field=form_field)
         form_field = self._process_enum_to_select_option(declared_field_definition, form_field=form_field)
+        form_field = self._set_required_error_text(declared_field_definition, form_field=form_field)
         form_field = self._set_label(form_field=form_field)
+        form_field = self._set_input_type(form_field=form_field)
+        return form_field
+
+    def _set_input_type(self, form_field: FormField):
+        if not form_field.inputType and form_field.dataType:
+            data_type = form_field.dataType
+            if data_type == "Integer" or data_type == "Float" or data_type == "Decimal":
+                form_field.inputType = "number"
+            elif data_type == "Email":
+                form_field.inputType = "email"
+            elif data_type == "EnumField":
+                form_field.inputType = "select"
+            else:
+                form_field.inputType = "text"
         return form_field
 
     def _get_field_data(self, declared_field_definition, name, default=None):
         if hasattr(declared_field_definition, name):
             return getattr(declared_field_definition, name)
         return default
+
+    def _set_required_error_text(self, declared_field_definition, form_field: FormField):
+        if declared_field_definition.required and hasattr(declared_field_definition, "error_messages") and "required" in declared_field_definition.error_messages:
+            form_field.errorText = declared_field_definition.error_messages["required"]
+        return form_field
 
     def _set_basic_information(self, declared_field_definition, form_field: FormField):
         form_field.name = self._get_field_data(declared_field_definition, "name", default=form_field.required)
