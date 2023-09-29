@@ -50,11 +50,12 @@ class PWebSSRUIHelper:
         return {}
 
     def render(self, view_name, params: dict = None, form: PWebForm = None):
+        if not params:
+            params = {}
+
         if form and form.definition:
             params["form"] = form.definition
 
-        if not params:
-            params = {}
         helper = self.get_helper()
         if helper:
             params.update(helper)

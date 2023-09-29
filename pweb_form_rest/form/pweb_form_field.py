@@ -12,8 +12,8 @@ class FormField(object):
     helpText: str = None
     isWrapper: bool = True
     isLabel: bool = True
-    attributes: dict = None
+    allAttributes: dict = None
 
     # Select Input
     isMultiSelect: bool = False
-    selectOptions: list = None
+    selectOptions: dict = None
