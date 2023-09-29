@@ -17,3 +17,11 @@ class FormField(object):
     # Select Input
     isMultiSelect: bool = False
     selectOptions: dict = None
+
+    def add_attribute(self, name, value):
+        if not self.allAttributes:
+            self.allAttributes = {}
+        if name not in self.allAttributes:
+            self.allAttributes[name] = value
+        elif name in self.allAttributes:
+            self.allAttributes[name] += f" {value}"
