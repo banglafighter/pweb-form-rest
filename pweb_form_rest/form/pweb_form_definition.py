@@ -1,9 +1,11 @@
+from pweb_form_rest.crud.pweb_request_data import RequestData
 from pweb_form_rest.form.pweb_form_field import FormField
 from pweb_form_rest.form.pweb_process_form_field import ProcessFormFiled
 
 
 class FormDefinition:
     process_form_filed = ProcessFormFiled()
+    request_data: RequestData = RequestData()
 
     def init(self, declared_fields: dict = None):
         self._process_form_field(declared_fields)
@@ -40,3 +42,29 @@ class FormDefinition:
             if key_name in option and value_name in option:
                 select_options[option[key_name]] = option[value_name]
         return self.set_select_option(field_name=field_name, select_options=select_options)
+
+    def set_field_errors(self, errors: dict):
+        for field_name in errors:
+            if hasattr(self, field_name):
+                form_field: FormField = getattr(self, field_name)
+                form_field.errorText = errors[field_name]
+                form_field.isError = True
+
+    def set_field_value(self, field_and_value: dict):
+        for field_name in field_and_value:
+            if hasattr(self, field_name) and field_and_value[field_name] != None:
+                form_field: FormField = getattr(self, field_name)
+                form_field.value = field_and_value[field_name]
+
+    def get_request_data(self, all_data=None):
+        if not all_data:
+            all_data = self.request_data.form_and_file_data()
+
+        for field_name in list(all_data.keys()):
+            if hasattr(self, field_name):
+                form_field: FormField = getattr(self, field_name)
+                if form_field.dataType in ["Integer", "Float", "DateTime", "Date", "EnumField", "FileField", "Boolean"] and all_data[field_name] == "":
+                    all_data[field_name] = None
+                if form_field.required and (all_data[field_name] == "" or all_data[field_name] is None):
+                    del all_data[field_name]
+        return all_data
