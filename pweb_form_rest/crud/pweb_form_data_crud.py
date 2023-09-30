@@ -24,3 +24,21 @@ class FormDataCRUD(PWebCRUDCommon):
             if model:
                 return model
         return self.render(view_name=view_name, form=form, params=params)
+
+    def paginated_list(self, view_name, response_def: PWebForm = None, query=None, search_fields: list = None, sort_field=None, sort_order=None, item_per_page=None, params: dict = None):
+        data_list = self.read_all(query=query, search_fields=search_fields, sort_field=sort_field, sort_order=sort_order, item_per_page=item_per_page)
+        if response_def and data_list.items:
+            data_list.items = response_def.dump(data_list.items, many=True)
+        if not params:
+            params = {}
+        params.update({"table": data_list})
+        return self.render(view_name=view_name, params=params)
+
+    def list(self, view_name, response_def: PWebForm = None, query=None, search_fields: list = None, sort_field=None, sort_order=None, params: dict = None):
+        data_list = self.read_all(query=query, search_fields=search_fields, sort_field=sort_field, sort_order=sort_order, enable_pagination=False)
+        if response_def:
+            data_list = response_def.dump(data_list.items, many=True)
+        if not params:
+            params = {}
+        params.update({"table": data_list})
+        return self.render(view_name=view_name, params=params)

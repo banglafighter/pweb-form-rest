@@ -1,4 +1,5 @@
 import re
+from urllib.parse import urlparse, parse_qsl, urlencode
 from flask import request
 from werkzeug.datastructures import ImmutableMultiDict
 from pweb_form_rest.data.pweb_request_info import PWebRequestInfo
@@ -107,3 +108,17 @@ class RequestData:
             url_dictionary.urlRule = str(request.url_rule)
             url_dictionary.baseURL = str(request.host_url).strip("/")
         return url_dictionary
+
+    def parse_query_params(self, url):
+        parsed = urlparse(url)
+        params = dict(parse_qsl(parsed.query))
+        return params
+
+    def add_to_query_params(self, url, params: dict):
+        if not params:
+            return url
+        current_params = self.parse_query_params(url)
+        merged_params = urlencode({**current_params, **params})
+        parsed = urlparse(url)
+        parsed = parsed._replace(query=merged_params)
+        return parsed.geturl()
