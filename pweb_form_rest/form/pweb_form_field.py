@@ -25,4 +25,4 @@ class FormField(object):
         if name not in self.allAttributes:
             self.allAttributes[name] = value
         elif name in self.allAttributes:
-            self.allAttributes[name] += f" {value}"
+            self.allAttributes[name] = f"{self.allAttributes[name]} {value}"

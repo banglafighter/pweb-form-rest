@@ -23,6 +23,10 @@ class ProcessFormFiled:
                 form_field.inputType = "email"
             elif data_type == "EnumField":
                 form_field.inputType = "select"
+            elif data_type == "Date":
+                form_field.inputType = "date"
+            elif data_type == "FileField":
+                form_field.inputType = "file"
             else:
                 form_field.inputType = "text"
         return form_field
