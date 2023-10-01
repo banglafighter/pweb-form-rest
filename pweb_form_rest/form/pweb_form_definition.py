@@ -6,6 +6,7 @@ from pweb_form_rest.form.pweb_process_form_field import ProcessFormFiled
 class FormDefinition:
     process_form_filed = ProcessFormFiled()
     request_data: RequestData = RequestData()
+    _record_form_fields: list = []
 
     def init(self, declared_fields: dict = None):
         self._process_form_field(declared_fields)
@@ -14,6 +15,9 @@ class FormDefinition:
         for field_name in declared_fields:
             declared_field_definition = declared_fields[field_name]
             if declared_field_definition and not declared_field_definition.dump_only:
+                if field_name not in self._record_form_fields:
+                    self._record_form_fields.append(field_name)
+
                 form_field: FormField = self._convert_declared_field_to_form_field(declared_field_definition, existing_form_definition)
                 setattr(self, form_field.name, form_field)
 
@@ -55,6 +59,24 @@ class FormDefinition:
             if hasattr(self, field_name) and field_and_value[field_name] != None:
                 form_field: FormField = getattr(self, field_name)
                 form_field.value = field_and_value[field_name]
+
+    def set_dict_value(self, name_value: dict):
+        if name_value and isinstance(name_value, dict):
+            self.set_field_value(name_value)
+            return True
+        return False
+
+    def set_value(self, field_name, value):
+        if field_name and value:
+            self.set_field_value({field_name: value})
+            return True
+        return False
+
+    def set_model_value(self, model):
+        for field_name in self._record_form_fields:
+            if hasattr(self, field_name) and hasattr(model, field_name):
+                value = getattr(model, field_name)
+                self.set_value(field_name, value)
 
     def get_request_data(self, all_data=None):
         if not all_data:

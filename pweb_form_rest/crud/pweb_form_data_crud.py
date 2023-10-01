@@ -15,7 +15,7 @@ class FormDataCRUD(PWebCRUDCommon):
     def render(self, view_name, params: dict = None, form: PWebForm = None):
         return ssr_ui_render(view_name=view_name, params=params, form=form, ssr_ui_helper=self.ssr_ui_helper)
 
-    def create(self, view_name: str, form: PWebForm, redirect_url=None, data: dict = None, params=None, response_message: str = "Successfully created!"):
+    def create(self, view_name: str, form: PWebForm, redirect_url=None, data: dict = None, params: dict = None, response_message: str = "Successfully created!"):
         if form.is_post_data() and form.is_valid_data(form_data=data):
             model = self.save(request_dto=form, data=form.get_request_data(form_data=data))
             flash(response_message, "success")
@@ -24,6 +24,35 @@ class FormDataCRUD(PWebCRUDCommon):
             if model:
                 return model
         return self.render(view_name=view_name, form=form, params=params)
+
+    def update(self, view_name: str, update_form: PWebForm, model_id: int = None, display_from: PWebForm = None, redirect_url: str = None, details_model=None, params: dict = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None):
+        if update_form.is_post_data() and update_form.is_valid_data(form_data=data):
+            model = self.edit(request_dto=update_form, model_id=model_id, existing_model=existing_model, data=data, query=query)
+            flash(response_message, "success")
+            if model and redirect_url:
+                return redirect(redirect_url)
+            if model:
+                return model
+        else:
+            if not details_model and model_id:
+                details_model = self.get_by_id(model_id=model_id, exception=False, query=query)
+
+            if not details_model:
+                flash('Invalid data', 'error')
+                if redirect_url:
+                    return redirect(redirect_url)
+
+            if display_from and details_model:
+                update_form.set_dict_value(display_from.dump(details_model))
+                if hasattr(details_model, "id"):
+                    update_form.set_value("id", details_model.id)
+            else:
+                update_form.set_model_value(details_model)
+
+        if not params:
+            params = {}
+        params["isEdit"] = True
+        return self.render(view_name=view_name, form=update_form, params=params)
 
     def paginated_list(self, view_name, response_def: PWebForm = None, query=None, search_fields: list = None, sort_field=None, sort_order=None, item_per_page=None, params: dict = None):
         data_list = self.read_all(query=query, search_fields=search_fields, sort_field=sort_field, sort_order=sort_order, item_per_page=item_per_page)

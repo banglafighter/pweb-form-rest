@@ -30,3 +30,12 @@ class PWebForm(PWebBaseForm, PWebRestDTO):
 
     def get_request_data(self, form_data=None):
         return self.definition.get_request_data(all_data=form_data)
+
+    def set_value(self, field_name, value):
+        return self.definition.set_value(field_name=field_name, value=value)
+
+    def set_dict_value(self, name_value: dict):
+        return self.definition.set_dict_value(name_value=name_value)
+
+    def set_model_value(self, model):
+        return self.definition.set_model_value(model=model)
