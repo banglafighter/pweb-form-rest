@@ -13,6 +13,17 @@ class PWebFormData:
     def is_post_data(self) -> bool:
         return self.request_data.is_post()
 
+    def handle_validation_exception(self, exception, definition: FormDefinition):
+        errors = {}
+        if exception and exception.messages_dict and isinstance(exception.messages_dict, dict):
+            for name, error in exception.messages_dict.items():
+                errors[name] = ', '.join(error)
+        definition.set_field_errors(errors)
+
+    def handle_form_rest_exception(self, exception, definition: FormDefinition):
+        if exception.messageResponse and exception.messageResponse.error:
+            definition.set_field_errors(exception.messageResponse.error)
+
     def is_valid_data(self, form: PWebOrmDTO, definition: FormDefinition, form_data=None) -> bool:
         try:
             if not form_data:
@@ -24,12 +35,7 @@ class PWebFormData:
             self.pweb_crud.get_form_data(data_dto=form, form_data=form_data)
             return True
         except ValidationError as e:
-            errors = {}
-            if e and e.messages_dict and isinstance(e.messages_dict, dict):
-                for name, error in e.messages_dict.items():
-                    errors[name] = ', '.join(error)
-            definition.set_field_errors(errors)
+            self.handle_validation_exception(exception=e, definition=definition)
         except FormRESTException as e:
-            if e.messageResponse and e.messageResponse.error:
-                definition.set_field_errors(e.messageResponse.error)
+            self.handle_form_rest_exception(exception=e, definition=definition)
         return False

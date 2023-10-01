@@ -27,7 +27,7 @@ class FormDataCRUD(PWebCRUDCommon):
 
     def update(self, view_name: str, update_form: PWebForm, model_id: int = None, display_from: PWebForm = None, redirect_url: str = None, details_model=None, params: dict = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None):
         if update_form.is_post_data() and update_form.is_valid_data(form_data=data):
-            model = self.edit(request_dto=update_form, model_id=model_id, existing_model=existing_model, data=data, query=query)
+            model = self.edit(request_dto=update_form, model_id=model_id, existing_model=existing_model, data=update_form.get_request_data(form_data=data), query=query)
             flash(response_message, "success")
             if model and redirect_url:
                 return redirect(redirect_url)
@@ -70,6 +70,9 @@ class FormDataCRUD(PWebCRUDCommon):
 
         if display_from:
             data = display_from.dump(data)
+
+        if not params:
+            params = {}
 
         params.update({"data": data})
         return self.render(view_name=view_name, params=params)
