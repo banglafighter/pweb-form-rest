@@ -54,6 +54,26 @@ class FormDataCRUD(PWebCRUDCommon):
         params["isEdit"] = True
         return self.render(view_name=view_name, form=update_form, params=params)
 
+    def delete(self, model_id: int, redirect_url: str, response_message: str = "Successfully deleted!", error_message: str = "Sorry unable to delete", query=None):
+        is_deleted = self.soft_remove(model_id=model_id, query=query, exception=False)
+        if is_deleted:
+            flash(response_message, 'success')
+        else:
+            flash(error_message, 'error')
+        return redirect(redirect_url)
+
+    def details(self, view_name, model_id: int, redirect_url: str, display_from: PWebForm = None, params: dict = None, query=None):
+        data = self.get_by_id(model_id=model_id, query=query, exception=False)
+        if not data:
+            flash('Invalid data', 'error')
+            return redirect(redirect_url)
+
+        if display_from:
+            data = display_from.dump(data)
+
+        params.update({"data": data})
+        return self.render(view_name=view_name, params=params)
+
     def paginated_list(self, view_name, response_def: PWebForm = None, query=None, search_fields: list = None, sort_field=None, sort_order=None, item_per_page=None, params: dict = None):
         data_list = self.read_all(query=query, search_fields=search_fields, sort_field=sort_field, sort_order=sort_order, item_per_page=item_per_page)
         if response_def and data_list.items:
