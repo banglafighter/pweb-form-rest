@@ -27,8 +27,12 @@ class FormDataCRUD(PWebCRUDCommon):
         requested_files = {}
         for field_name in request_data:
             if isinstance(request_data[field_name], FileStorage):
-                processed_request_data[field_name] = request_data[field_name].filename.lower()
-                requested_files[field_name] = request_data[field_name]
+                filename = request_data[field_name].filename.lower()
+                if filename and filename != "":
+                    processed_request_data[field_name] = filename
+                    requested_files[field_name] = request_data[field_name]
+                elif filename == "":
+                    del processed_request_data[field_name]
         return processed_request_data, requested_files
 
     def post_process_file_upload(self, requested_files, model, form: PWebForm, upload_path: str, override_names: dict = None):
