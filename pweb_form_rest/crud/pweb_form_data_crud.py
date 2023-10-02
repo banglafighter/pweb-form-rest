@@ -1,4 +1,9 @@
+from copy import copy
+
 from flask import flash, redirect
+from werkzeug.datastructures import FileStorage
+
+from pweb_form_rest import FileDataCRUD
 from pweb_form_rest.crud.pweb_crud_common import PWebCRUDCommon
 from pweb_form_rest.form.pweb_form import PWebForm
 from pweb_form_rest.ui.pweb_ui_helper import PWebSSRUIHelper, ssr_ui_render
@@ -7,17 +12,36 @@ from pweb_orm import PWebBaseModel
 
 class FormDataCRUD(PWebCRUDCommon):
     ssr_ui_helper: PWebSSRUIHelper = None
+    file_data_crud: FileDataCRUD = None
 
     def __init__(self, model: PWebBaseModel, ssr_ui_helper: PWebSSRUIHelper = None):
         self.model = model
         self.ssr_ui_helper = ssr_ui_helper
+        self.file_data_crud = FileDataCRUD(model=self.model)
 
     def render(self, view_name, params: dict = None, form: PWebForm = None):
         return ssr_ui_render(view_name=view_name, params=params, form=form, ssr_ui_helper=self.ssr_ui_helper)
 
-    def create(self, view_name: str, form: PWebForm, redirect_url=None, data: dict = None, params: dict = None, response_message: str = "Successfully created!"):
+    def pre_process_file_upload(self, request_data):
+        processed_request_data = copy(request_data)
+        requested_files = {}
+        for field_name in request_data:
+            if isinstance(request_data[field_name], FileStorage):
+                processed_request_data[field_name] = request_data[field_name].filename.lower()
+                requested_files[field_name] = request_data[field_name]
+        return processed_request_data, requested_files
+
+    def post_process_file_upload(self, requested_files, model, form: PWebForm, upload_path: str, override_names: dict = None):
+        if not requested_files or not upload_path:
+            return model
+        return self.file_data_crud.upload_and_save_file(form_data=requested_files, model=model, request_dto=form, override_names=override_names, upload_path=upload_path)
+
+    def create(self, view_name: str, form: PWebForm, redirect_url=None, data: dict = None, params: dict = None, response_message: str = "Successfully created!", upload_path: str = None, override_names: dict = None):
         if form.is_post_data() and form.is_valid_data(form_data=data):
-            model = self.save(request_dto=form, data=form.get_request_data(form_data=data))
+            request_data = form.get_request_data(form_data=data)
+            processed_request_data, requested_files = self.pre_process_file_upload(request_data=request_data)
+            model = self.save(request_dto=form, data=processed_request_data)
+            self.post_process_file_upload(requested_files=requested_files, model=model, form=form, upload_path=upload_path, override_names=override_names)
             flash(response_message, "success")
             if model and redirect_url:
                 return redirect(redirect_url)
@@ -25,9 +49,12 @@ class FormDataCRUD(PWebCRUDCommon):
                 return model
         return self.render(view_name=view_name, form=form, params=params)
 
-    def update(self, view_name: str, update_form: PWebForm, model_id: int = None, display_from: PWebForm = None, redirect_url: str = None, details_model=None, params: dict = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None):
+    def update(self, view_name: str, update_form: PWebForm, model_id: int = None, display_from: PWebForm = None, redirect_url: str = None, details_model=None, params: dict = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None, upload_path: str = None, override_names: dict = None):
         if update_form.is_post_data() and update_form.is_valid_data(form_data=data):
-            model = self.edit(request_dto=update_form, model_id=model_id, existing_model=existing_model, data=update_form.get_request_data(form_data=data), query=query)
+            request_data = update_form.get_request_data(form_data=data)
+            processed_request_data, requested_files = self.pre_process_file_upload(request_data=request_data)
+            model = self.edit(request_dto=update_form, model_id=model_id, existing_model=existing_model, data=processed_request_data, query=query)
+            self.post_process_file_upload(requested_files=requested_files, model=model, form=update_form, upload_path=upload_path, override_names=override_names)
             flash(response_message, "success")
             if model and redirect_url:
                 return redirect(redirect_url)
