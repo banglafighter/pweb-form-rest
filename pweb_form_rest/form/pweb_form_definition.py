@@ -7,6 +7,7 @@ class FormDefinition:
     process_form_filed = ProcessFormFiled()
     request_data: RequestData = RequestData()
     _record_form_fields: list = []
+    _record_check_uncheck_fields: list = []
 
     def init(self, declared_fields: dict = None):
         self._process_form_field(declared_fields)
@@ -17,8 +18,9 @@ class FormDefinition:
             if declared_field_definition and not declared_field_definition.dump_only:
                 if field_name not in self._record_form_fields:
                     self._record_form_fields.append(field_name)
-
                 form_field: FormField = self._convert_declared_field_to_form_field(declared_field_definition, existing_form_definition)
+                if form_field.inputType == "radio" or form_field.inputType == "checkbox":
+                    self._record_check_uncheck_fields.append(field_name)
                 setattr(self, form_field.name, form_field)
 
     def _convert_declared_field_to_form_field(self, declared_field_definition, existing_form_definition=None):
@@ -89,4 +91,11 @@ class FormDefinition:
                     all_data[field_name] = None
                 if form_field.required and (all_data[field_name] == "" or all_data[field_name] is None):
                     del all_data[field_name]
+
+        if self._record_check_uncheck_fields:
+            for check_uncheck_input in self._record_check_uncheck_fields:
+                if check_uncheck_input not in all_data and hasattr(self, check_uncheck_input):
+                    form_field: FormField = getattr(self, check_uncheck_input)
+                    all_data[check_uncheck_input] = form_field.unchecked
+
         return all_data

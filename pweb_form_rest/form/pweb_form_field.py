@@ -19,7 +19,10 @@ class FormField(object):
     isMultiSelect: bool = False
     selectOptions: dict = None
 
+    # Radio & Check
     radioItem: dict = None
+    checked: str = "True"
+    unchecked: str = "False"
 
     def add_attribute(self, name, value):
         if not self.allAttributes:
