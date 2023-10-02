@@ -1,6 +1,5 @@
 import json
 from flask import get_flashed_messages, render_template, render_template_string
-
 from ppy_file_text import TextFileMan
 from pweb_form_rest.common.pweb_fr_config import PWebFRConfig
 from pweb_form_rest.crud.pweb_request_data import RequestData
