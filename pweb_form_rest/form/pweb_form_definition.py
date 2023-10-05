@@ -4,12 +4,14 @@ from pweb_form_rest.form.pweb_process_form_field import ProcessFormFiled
 
 
 class FormDefinition:
+    is_validation_error: bool = False
     process_form_filed = ProcessFormFiled()
     request_data: RequestData = RequestData()
     _record_form_fields: list = []
     _record_check_uncheck_fields: list = []
 
     def init(self, declared_fields: dict = None):
+        self.is_validation_error = False
         self._process_form_field(declared_fields)
 
     def _process_form_field(self, declared_fields: dict, existing_form_definition=None):
@@ -50,6 +52,7 @@ class FormDefinition:
         return self.set_select_option(field_name=field_name, select_options=select_options)
 
     def set_field_errors(self, errors: dict):
+        self.is_validation_error = True
         for field_name in errors:
             if hasattr(self, field_name):
                 form_field: FormField = getattr(self, field_name)

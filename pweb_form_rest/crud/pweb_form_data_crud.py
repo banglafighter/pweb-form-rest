@@ -1,8 +1,6 @@
 from copy import copy
-
 from flask import flash, redirect
 from werkzeug.datastructures import FileStorage
-
 from pweb_form_rest import FileDataCRUD
 from pweb_form_rest.crud.pweb_crud_common import PWebCRUDCommon
 from pweb_form_rest.form.pweb_form import PWebForm
@@ -64,7 +62,7 @@ class FormDataCRUD(PWebCRUDCommon):
                 return redirect(redirect_url)
             if model:
                 return model
-        else:
+        elif update_form.is_get_data():
             if not details_model and model_id:
                 details_model = self.get_by_id(model_id=model_id, exception=False, query=query)
 

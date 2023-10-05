@@ -13,6 +13,9 @@ class PWebFormData:
     def is_post_data(self) -> bool:
         return self.request_data.is_post()
 
+    def is_get_data(self) -> bool:
+        return self.request_data.is_get()
+
     def handle_validation_exception(self, exception, definition: FormDefinition):
         errors = {}
         if exception and exception.messages_dict and isinstance(exception.messages_dict, dict):
@@ -31,6 +34,9 @@ class PWebFormData:
 
             if form_data:
                 definition.set_field_value(field_and_value=form_data)
+
+            if definition.is_validation_error:
+                return False
 
             self.pweb_crud.get_form_data(data_dto=form, form_data=form_data)
             return True
