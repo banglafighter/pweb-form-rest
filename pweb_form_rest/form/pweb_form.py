@@ -25,6 +25,9 @@ class PWebForm(PWebBaseForm, PWebRestDTO):
     def is_post_data(self) -> bool:
         return self.pweb_form_data.is_post_data()
 
+    def is_get_data(self) -> bool:
+        return self.pweb_form_data.is_get_data()
+
     def is_valid_data(self, form_data=None) -> bool:
         return self.pweb_form_data.is_valid_data(form=self, form_data=form_data, definition=self.definition)
 
@@ -39,3 +42,7 @@ class PWebForm(PWebBaseForm, PWebRestDTO):
 
     def set_model_value(self, model):
         return self.definition.set_model_value(model=model)
+
+    def set_field_error(self, field_name, error):
+        if self.definition:
+            self.definition.set_field_errors({field_name: error})
