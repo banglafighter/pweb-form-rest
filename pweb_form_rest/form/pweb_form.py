@@ -28,6 +28,11 @@ class PWebForm(PWebBaseForm, PWebRestDTO):
     def is_get_data(self) -> bool:
         return self.pweb_form_data.is_get_data()
 
+    def is_valid_data_submit(self, form_data=None):
+        if self.is_post_data() and self.is_valid_data(form_data=form_data):
+            return True
+        return False
+
     def is_valid_data(self, form_data=None) -> bool:
         return self.pweb_form_data.is_valid_data(form=self, form_data=form_data, definition=self.definition)
 
