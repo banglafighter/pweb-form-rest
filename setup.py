@@ -12,7 +12,7 @@ def get_dependencies():
     dependency = [
         'marshmallow==3.20.1',
         'apispec==6.3.0',
-        'marshmallow-sqlalchemy==0.29.0'
+        'marshmallow-sqlalchemy'
     ]
 
     if env and env == "code":
