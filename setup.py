@@ -15,7 +15,7 @@ def get_dependencies():
         'marshmallow-sqlalchemy==0.29.0'
     ]
 
-    if env and env == "dev":
+    if env and env == "code":
         return dependency
 
     return dependency + ["ppy-common", "pweb-orm", "ppy-file-text"]
