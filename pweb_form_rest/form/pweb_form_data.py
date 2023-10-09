@@ -24,7 +24,7 @@ class PWebFormData:
         definition.set_field_errors(errors)
 
     def handle_form_rest_exception(self, exception, definition: FormDefinition):
-        if exception.messageResponse and exception.messageResponse.error:
+        if exception.messageResponse and hasattr(exception.messageResponse, "error") and exception.messageResponse.error:
             definition.set_field_errors(exception.messageResponse.error)
 
     def is_valid_data(self, form: PWebOrmDTO, definition: FormDefinition, form_data=None) -> bool:

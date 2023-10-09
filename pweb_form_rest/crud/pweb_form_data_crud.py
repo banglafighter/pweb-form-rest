@@ -1,9 +1,13 @@
 from copy import copy
 from flask import flash, redirect
+from marshmallow import ValidationError
 from werkzeug.datastructures import FileStorage
+from pweb_auth.common.pweb_auth_config import PWebAuthConfig
 from pweb_form_rest import FileDataCRUD
+from pweb_form_rest.common.pweb_fr_exception import FormRESTException
 from pweb_form_rest.crud.pweb_crud_common import PWebCRUDCommon
 from pweb_form_rest.form.pweb_form import PWebForm
+from pweb_form_rest.form.pweb_form_data import PWebFormData
 from pweb_form_rest.ui.pweb_ui_helper import PWebSSRUIHelper, ssr_ui_render
 from pweb_orm import PWebBaseModel
 
@@ -11,6 +15,7 @@ from pweb_orm import PWebBaseModel
 class FormDataCRUD(PWebCRUDCommon):
     ssr_ui_helper: PWebSSRUIHelper = None
     file_data_crud: FileDataCRUD = None
+    pweb_form_data: PWebFormData = PWebFormData()
 
     def __init__(self, model: PWebBaseModel, ssr_ui_helper: PWebSSRUIHelper = None):
         self.model = model
@@ -37,6 +42,17 @@ class FormDataCRUD(PWebCRUDCommon):
         if not requested_files or not upload_path:
             return model
         return self.file_data_crud.upload_and_save_file(form_data=requested_files, model=model, request_dto=form, override_names=override_names, upload_path=upload_path)
+
+    def handle_various_exception(self, exception, form: PWebForm):
+        if exception and form:
+            if isinstance(exception, ValidationError):
+                self.pweb_form_data.handle_validation_exception(exception=exception, definition=form.definition)
+            elif isinstance(exception, FormRESTException):
+                self.pweb_form_data.handle_form_rest_exception(exception=exception, definition=form.definition)
+        message = PWebAuthConfig.CHECK_VALIDATION_ERROR_SM
+        if exception and hasattr(exception, "message"):
+            message = exception.message
+        flash(message, "error")
 
     def create(self, view_name: str, form: PWebForm, redirect_url=None, data: dict = None, params: dict = None, response_message: str = "Successfully created!", upload_path: str = None, override_names: dict = None):
         if form.is_post_data() and form.is_valid_data(form_data=data):
