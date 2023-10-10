@@ -18,7 +18,7 @@ class PWebSwaggerUI:
                 __name__,
                 template_folder="template-assets/templates",
                 static_folder="template-assets/assets",
-                static_url_path="/swagger-assets"
+                static_url_path=PWebFRConfig.SWAGGER_UI_ASSETS_URL
             )
             blueprint.add_url_rule(PWebFRConfig.SWAGGER_JSON_URL, "pweb-swagger-json", self.swagger_json)
             blueprint.add_url_rule(PWebFRConfig.SWAGGER_UI_URL, "pweb-swagger-ui", self.swagger_ui)
