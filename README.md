@@ -8,7 +8,7 @@
 ## Documentation
 Install and update using [pip](https://pip.pypa.io/en/stable/getting-started/):
 ```bash
-pip install -U PWebFormREST
+pip install -U pweb-form-rest
 ```
 
 **Please find [the Documentation]() with example from [hmtmcse.com]()**
