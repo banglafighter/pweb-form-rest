@@ -23,7 +23,7 @@ def get_dependencies():
 
 setup(
     name='pweb-form-rest',
-    version='0.0.2',
+    version='0.0.3',
     url='https://github.com/problemfighter/pweb-form-rest',
     license='Apache 2.0',
     author='Problem Fighter',
@@ -31,6 +31,7 @@ setup(
     description='Make Form & REST API convention, Validate request and produce response for PWeb application. It can produce Swagger API Documentation as well',
     long_description=README,
     long_description_content_type='text/markdown',
+    package_data={'pweb_form_rest': ['swagger/template-assets/**/*']},
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
