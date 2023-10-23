@@ -87,6 +87,9 @@ class FormDefinition:
         if not all_data:
             all_data = self.request_data.form_and_file_data()
 
+        if not all_data:
+            return all_data
+
         for field_name in list(all_data.keys()):
             if hasattr(self, field_name):
                 form_field: FormField = getattr(self, field_name)
