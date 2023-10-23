@@ -24,10 +24,10 @@ def get_dependencies():
 setup(
     name='pweb-form-rest',
     version='0.0.3',
-    url='https://github.com/problemfighter/pweb-form-rest',
+    url='https://github.com/banglafighter/pweb-form-rest',
     license='Apache 2.0',
-    author='Problem Fighter',
-    author_email='problemfighter.com@gmail.com',
+    author='Bangla Fighter',
+    author_email='banglafighter.com@gmail.com',
     description='Make Form & REST API convention, Validate request and produce response for PWeb application. It can produce Swagger API Documentation as well',
     long_description=README,
     long_description_content_type='text/markdown',

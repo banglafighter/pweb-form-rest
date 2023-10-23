@@ -16,7 +16,7 @@ pip install -U pweb-form-rest
 
 <br/><br/><br/>
 ## Donate
-[Problem Fighter](https://www.problemfighter.com/) develops and supports PWebFormREST and the libraries it uses. In order to grow
+[Bangla Fighter](https://www.banglafighter.com/) develops and supports PWebFormREST and the libraries it uses. In order to grow
 the community of contributors and users, and allow the maintainers to devote more time to the projects.
 
 
@@ -27,7 +27,7 @@ For guidance on setting up a development environment and how to make a contribut
 
 <br/><br/><br/>
 ## Links
-* **Changes :** [https://opensource.problemfighter.org/pweb/pweb-form-rest](https://opensource.problemfighter.org/pweb/pweb-rest)
+* **Changes :** [https://opensource.banglafighter.org/pweb/pweb-form-rest](https://opensource.problemfighter.org/pweb/pweb-rest)
 * **PyPI Releases :** [https://pypi.org/project/pweb-rest](https://pypi.org/project/pweb-rest)
 * **Source Code :** [https://github.com/problemfighter/pweb-rest](https://github.com/problemfighter/pweb-rest)
 * **Issue Tracker :** [https://github.com/problemfighter/pweb-rest/issues](https://github.com/problemfighter/pweb-rest/issues)
