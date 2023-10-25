@@ -1,6 +1,6 @@
 from ppy_common import PPyCException
 from pweb_form_rest.data.pweb_response_data import PWebMessageResponse, PWebErrorResponse
-from pweb_form_rest.data.pweb_response_status import PWebResponseCode, PWebHTTPCode
+from pweb_form_rest.data.pweb_response_status import PWebResponseCode, PWebHTTPCode, PWebResponseStatus
 
 
 class FormRESTException(PPyCException):
@@ -18,7 +18,7 @@ class FormRESTException(PPyCException):
         response = PWebMessageResponse()
         response.message = message
         response.code = code
-        response.status = PWebResponseCode.error
+        response.status = PWebResponseStatus.error
         response.http_code = http_code
         self.messageResponse = response
         return self
@@ -28,7 +28,7 @@ class FormRESTException(PPyCException):
         response = PWebErrorResponse()
         response.message = message
         response.code = code
-        response.status = PWebResponseCode.error
+        response.status = PWebResponseStatus.error
         response.http_code = http_code
         response.error = details
         self.messageResponse = response
