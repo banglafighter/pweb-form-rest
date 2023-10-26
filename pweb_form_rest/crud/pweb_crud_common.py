@@ -17,6 +17,9 @@ class PWebCRUDCommon:
     def validate_data(self, data: dict, data_dto: PWebDataDTO):
         return self.pweb_crud.validate_data(data=data, data_dto=data_dto)
 
+    def load_model_from_dict(self, data: dict, data_dto: PWebDataDTO, instance=None):
+        return self.pweb_crud.load_model_from_dict(data=data, data_dto=data_dto, instance=instance)
+
     def get_json_data(self, data_dto: PWebDataDTO, is_validate=True, load_only=False):
         return self.pweb_crud.get_json_data(data_dto=data_dto, is_validate=is_validate, load_only=load_only)
 
