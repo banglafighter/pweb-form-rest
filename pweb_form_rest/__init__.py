@@ -10,6 +10,6 @@ from pweb_form_rest.form.pweb_form_field import FormField
 from pweb_form_rest.form.pweb_form import PWebForm
 from pweb_form_rest.common.pweb_fr_exception import form_rest_exception
 from pweb_form_rest.crud.pweb_crud import PWebCRUD
-from marshmallow import ValidationError, validates_schema, fields
+from marshmallow import ValidationError, validates_schema, fields, Schema
 from pweb_form_rest.schema.pweb_rest_schema import PWebRestDTO, PWebOrmDTO
 from pweb_form_rest.crud.pweb_response_maker import ResponseMaker
