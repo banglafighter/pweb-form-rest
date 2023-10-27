@@ -8,10 +8,18 @@ class RESTDataCRUD(PWebCRUDCommon):
     def __init__(self, model: PWebBaseModel):
         self.model = model
 
-    def create(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = "Successfully created!", data: dict = None):
+    def update_and_get_model(self, request_dto: PWebDataDTO, data: dict = None, existing_model=None, query=None):
         if not data:
             data = self.get_json_data(request_dto)
-        model = self.save(data=data, request_dto=request_dto)
+        return self.edit(model_id=data['id'], data=data, request_dto=request_dto, existing_model=existing_model, query=query)
+
+    def create_and_get_model(self, request_dto: PWebDataDTO, data: dict = None):
+        if not data:
+            data = self.get_json_data(request_dto)
+        return self.save(data=data, request_dto=request_dto)
+        
+    def create(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = "Successfully created!", data: dict = None):
+        model = self.create_and_get_model(data=data, request_dto=request_dto)
         return self.message_or_data_response(model, response_dto, response_message)
 
     def details(self, model_id: int, response_dto: PWebDataDTO, query=None):
@@ -19,9 +27,7 @@ class RESTDataCRUD(PWebCRUDCommon):
         return self.response_maker.data_response(existing_model, response_dto)
 
     def update(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None):
-        if not data:
-            data = self.get_json_data(request_dto)
-        model = self.edit(model_id=data['id'], data=data, request_dto=request_dto, existing_model=existing_model, query=query)
+        model = self.update_and_get_model(request_dto=request_dto, existing_model=existing_model, query=query)
         return self.message_or_data_response(model, response_dto, response_message)
 
     def delete(self, model_id: int, response_message: str = "Successfully deleted!", query=None):
