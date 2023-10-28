@@ -1,12 +1,15 @@
 from pweb_form_rest.crud.pweb_crud_common import PWebCRUDCommon
 from pweb_form_rest.schema.pweb_rest_schema import PWebDataDTO
+from pweb_form_rest.crud.pweb_file_data_crud import FileDataCRUD
 from pweb_orm import PWebBaseModel
 
 
 class RESTDataCRUD(PWebCRUDCommon):
+    file_data_crud = None
 
     def __init__(self, model: PWebBaseModel):
         self.model = model
+        self.file_data_crud = FileDataCRUD(model=model)
 
     def update_and_get_model(self, request_dto: PWebDataDTO, data: dict = None, existing_model=None, query=None):
         if not data:
@@ -45,3 +48,9 @@ class RESTDataCRUD(PWebCRUDCommon):
     def list(self, response_dto: PWebDataDTO, query=None, search_fields: list = None, sort_field=None, sort_order=None):
         data_list = self.read_all(query=query, search_fields=search_fields, sort_field=sort_field, sort_order=sort_order, enable_pagination=False)
         return self.response_maker.list_data_type_response(data_list, response_dto=response_dto)
+
+    def upload_file_data(self, request_dto: PWebDataDTO, upload_path, response_dto: PWebDataDTO = None, override_names: dict = None, response_message: str = "Successfully created!", form_data=None):
+        return self.file_data_crud.upload_file_data(request_dto=request_dto, upload_path=upload_path, response_dto=response_dto, override_names=override_names, response_message=response_message, form_data=form_data)
+
+    def update_upload_file_data(self, request_dto: PWebDataDTO, upload_path, response_dto: PWebDataDTO = None, override_names: dict = None, response_message: str = "Successfully updated!", existing_model=None, form_data: dict = None, query=None):
+        return self.file_data_crud.update_upload_file_data(request_dto=request_dto, upload_path=upload_path, response_dto=response_dto, override_names=override_names, response_message=response_message, existing_model=existing_model, form_data=form_data, query=query)
