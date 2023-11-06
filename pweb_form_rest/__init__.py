@@ -13,3 +13,4 @@ from pweb_form_rest.crud.pweb_crud import PWebCRUD
 from marshmallow import ValidationError, validates_schema, fields, Schema
 from pweb_form_rest.schema.pweb_rest_schema import PWebRestDTO, PWebOrmDTO
 from pweb_form_rest.crud.pweb_response_maker import ResponseMaker
+from pweb_form_rest.schema.pweb_rest_schema import PWebDataDTO
