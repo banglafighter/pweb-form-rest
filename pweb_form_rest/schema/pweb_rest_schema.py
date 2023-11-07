@@ -48,7 +48,12 @@ class PWebDataDTO(APIBase, object):
 
 
 class PWebOrmDTO(PWebDataDTO, SQLAlchemySchema):
-    pass
+
+    def set_meta_model(self, model):
+        if hasattr(self, "Meta") and hasattr(self, "opts"):
+            setattr(self.Meta, "model", model)
+            setattr(self.opts, "model", model)
+        return self
 
 
 class PWebRestDTO(PWebOrmDTO):
