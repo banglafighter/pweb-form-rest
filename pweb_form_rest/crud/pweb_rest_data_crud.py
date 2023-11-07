@@ -30,7 +30,7 @@ class RESTDataCRUD(PWebCRUDCommon):
         return self.response_maker.data_response(existing_model, response_dto)
 
     def update(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None):
-        model = self.update_and_get_model(request_dto=request_dto, existing_model=existing_model, query=query)
+        model = self.update_and_get_model(request_dto=request_dto, existing_model=existing_model, query=query, data=data)
         return self.message_or_data_response(model, response_dto, response_message)
 
     def delete(self, model_id: int, response_message: str = "Successfully deleted!", query=None):
