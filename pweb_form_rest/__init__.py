@@ -14,4 +14,4 @@ from marshmallow import ValidationError, validates_schema, fields, Schema
 from pweb_form_rest.schema.pweb_rest_schema import PWebRestDTO, PWebOrmDTO
 from pweb_form_rest.crud.pweb_response_maker import ResponseMaker
 from pweb_form_rest.schema.pweb_rest_schema import PWebDataDTO
-from pweb_form_rest.crud.pweb_rest_data_crud import RESTMessage
+from pweb_form_rest.common.pweb_com_fr_message import ComFRMessage
