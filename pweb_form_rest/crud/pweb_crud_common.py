@@ -12,7 +12,7 @@ class PWebCRUDCommon:
     def message_or_data_response(self, model, response_dto: PWebDataDTO = None, response_message: str = None):
         if not response_dto:
             return self.response_maker.success_message(response_message)
-        return self.response_maker.data_response(model, response_dto)
+        return self.response_maker.data_response(model, response_dto, message=response_message)
 
     def validate_data(self, data: dict, data_dto: PWebDataDTO):
         return self.pweb_crud.validate_data(data=data, data_dto=data_dto)

@@ -64,15 +64,16 @@ class ResponseMaker:
     def error_message(self, message: str, code: str = PWebResponseCode.error, http_code=200):
         return self.message(message, PWebResponseStatus.error, code, http_code)
 
-    def data_type_response(self, model: PWebBaseModel, response_dto: PWebDataDTO, many=False, status: str = PWebResponseStatus.success, code: str = PWebResponseCode.success):
+    def data_type_response(self, model: PWebBaseModel, response_dto: PWebDataDTO, many=False, status: str = PWebResponseStatus.success, code: str = PWebResponseCode.success, message: str = None):
         data_response = PWebDataResponse()
         data_response.status = status
         data_response.code = code
+        data_response.message = message
         data_response.add_data(model, response_dto, many)
         return data_response
 
-    def data_response(self, model: PWebBaseModel, response_dto: PWebDataDTO, many=False, status: str = PWebResponseStatus.success, code: str = PWebResponseCode.success, http_code=200):
-        data_response = self.data_type_response(model=model, response_dto=response_dto, many=many, status=status, code=code)
+    def data_response(self, model: PWebBaseModel, response_dto: PWebDataDTO, many=False, status: str = PWebResponseStatus.success, code: str = PWebResponseCode.success, http_code=200, message: str = None):
+        data_response = self.data_type_response(model=model, response_dto=response_dto, many=many, status=status, code=code, message=message)
         return self.http_response.json_string_response(data_response.to_dict(), http_code, self.headers)
 
     def set_pagination_data(self, model: PWebBaseModel):
