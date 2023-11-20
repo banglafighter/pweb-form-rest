@@ -48,6 +48,6 @@ class PWebForm(PWebBaseForm, PWebRestDTO):
     def set_model_value(self, model):
         return self.definition.set_model_value(model=model)
 
-    def set_field_error(self, field_name, error):
+    def set_field_error(self, field_name: str, error: str):
         if self.definition:
             self.definition.set_field_errors({field_name: error})
