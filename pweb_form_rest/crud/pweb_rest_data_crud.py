@@ -12,26 +12,26 @@ class RESTDataCRUD(PWebCRUDCommon):
         self.model = model
         self.file_data_crud = FileDataCRUD(model=model)
 
-    def update_and_get_model(self, request_dto: PWebDataDTO, data: dict = None, existing_model=None, query=None):
+    def update_and_get_model(self, request_dto: PWebDataDTO, data: dict = None, existing_model=None, query=None, before_save=None, after_save=None):
         if not data:
             data = self.get_json_data(request_dto)
-        return self.edit(model_id=data['id'], data=data, request_dto=request_dto, existing_model=existing_model, query=query)
+        return self.edit(model_id=data['id'], data=data, request_dto=request_dto, existing_model=existing_model, query=query, before_save=before_save, after_save=after_save)
 
-    def create_and_get_model(self, request_dto: PWebDataDTO, data: dict = None):
+    def create_and_get_model(self, request_dto: PWebDataDTO, data: dict = None, before_save=None, after_save=None):
         if not data:
             data = self.get_json_data(request_dto)
-        return self.save(data=data, request_dto=request_dto)
+        return self.save(data=data, request_dto=request_dto, before_save=before_save, after_save=after_save)
 
-    def create(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = ComFRMessage.create_success, data: dict = None):
-        model = self.create_and_get_model(data=data, request_dto=request_dto)
+    def create(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = ComFRMessage.create_success, data: dict = None, before_save=None, after_save=None):
+        model = self.create_and_get_model(data=data, request_dto=request_dto, before_save=before_save, after_save=after_save)
         return self.message_or_data_response(model, response_dto, response_message)
 
     def details(self, model_id: int, response_dto: PWebDataDTO, query=None):
         existing_model = self.get_by_id(model_id, exception=True, query=query)
         return self.response_maker.data_response(existing_model, response_dto)
 
-    def update(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = ComFRMessage.update_success, existing_model=None, data: dict = None, query=None):
-        model = self.update_and_get_model(request_dto=request_dto, existing_model=existing_model, query=query, data=data)
+    def update(self, request_dto: PWebDataDTO, response_dto: PWebDataDTO = None, response_message: str = ComFRMessage.update_success, existing_model=None, data: dict = None, query=None, before_save=None, after_save=None):
+        model = self.update_and_get_model(request_dto=request_dto, existing_model=existing_model, query=query, data=data, before_save=before_save, after_save=after_save)
         return self.message_or_data_response(model, response_dto, response_message)
 
     def delete(self, model_id: int, response_message: str = ComFRMessage.delete_success, query=None):

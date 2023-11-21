@@ -35,15 +35,19 @@ class PWebCRUDCommon:
     def read_all(self, query=None, search_fields: list = None, sort_field=None, sort_order=None, item_per_page=None, enable_pagination=True):
         return self.pweb_crud.list(model=self.model, query=query, search_fields=search_fields, sort_field=sort_field, sort_order=sort_order, item_per_page=item_per_page, enable_pagination=enable_pagination)
 
-    def save(self, data: dict, request_dto: PWebDataDTO, existing_model=None):
+    def save(self, data: dict, request_dto: PWebDataDTO, existing_model=None, before_save=None, after_save=None):
         model = self.pweb_crud.populate_model(data, request_dto, instance=existing_model)
+        if before_save and callable(before_save):
+            before_save(data=data, model=model)
         model.save()
+        if after_save and callable(after_save):
+            after_save(data=data, model=model)
         return model
 
-    def edit(self, model_id, data: dict, request_dto: PWebDataDTO, existing_model=None, query=None):
+    def edit(self, model_id, data: dict, request_dto: PWebDataDTO, existing_model=None, query=None, before_save=None, after_save=None):
         if not existing_model:
             existing_model = self.get_by_id(model_id, query=query, exception=True)
-        return self.save(data=data, request_dto=request_dto, existing_model=existing_model)
+        return self.save(data=data, request_dto=request_dto, existing_model=existing_model, before_save=before_save, after_save=after_save)
 
     def soft_remove(self, model_id: int, query=None, exception=True):
         existing_model = self.get_by_id(model_id, exception=exception, query=query)

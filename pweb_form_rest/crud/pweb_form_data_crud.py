@@ -58,7 +58,7 @@ class FormDataCRUD(PWebCRUDCommon):
         if form.is_post_data() and form.is_valid_data(form_data=data):
             request_data = form.get_request_data(form_data=data)
             processed_request_data, requested_files = self.pre_process_file_upload(request_data=request_data)
-            model = self.save(request_dto=form, data=processed_request_data)
+            model = self.save(request_dto=form, data=processed_request_data, before_save=before_save, after_save=after_save)
             self.post_process_file_upload(requested_files=requested_files, model=model, form=form, upload_path=upload_path, override_names=override_names)
             return model
         return None
@@ -67,12 +67,12 @@ class FormDataCRUD(PWebCRUDCommon):
         if update_form.is_post_data() and update_form.is_valid_data(form_data=data):
             request_data = update_form.get_request_data(form_data=data)
             processed_request_data, requested_files = self.pre_process_file_upload(request_data=request_data)
-            model = self.edit(request_dto=update_form, model_id=model_id, existing_model=existing_model, data=processed_request_data, query=query)
+            model = self.edit(request_dto=update_form, model_id=model_id, existing_model=existing_model, data=processed_request_data, query=query, before_save=before_save, after_save=after_save)
             self.post_process_file_upload(requested_files=requested_files, model=model, form=update_form, upload_path=upload_path, override_names=override_names)
             return model
         return None
 
-    def create(self, view_name: str, form: PWebForm, redirect_url=None, data: dict = None, params: dict = None, response_message: str = "Successfully created!", upload_path: str = None, override_names: dict = None):
+    def create(self, view_name: str, form: PWebForm, redirect_url=None, data: dict = None, params: dict = None, response_message: str = "Successfully created!", upload_path: str = None, override_names: dict = None, before_save=None, after_save=None):
         if form.is_post_data() and form.is_valid_data(form_data=data):
             model = self.only_create(form=form, data=data, upload_path=upload_path, override_names=override_names)
             flash(response_message, "success")
@@ -82,7 +82,7 @@ class FormDataCRUD(PWebCRUDCommon):
                 return model
         return self.render(view_name=view_name, form=form, params=params)
 
-    def update(self, view_name: str, update_form: PWebForm, model_id: int = None, display_from: PWebForm = None, redirect_url: str = None, details_model=None, params: dict = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None, upload_path: str = None, override_names: dict = None):
+    def update(self, view_name: str, update_form: PWebForm, model_id: int = None, display_from: PWebForm = None, redirect_url: str = None, details_model=None, params: dict = None, response_message: str = "Successfully updated!", existing_model=None, data: dict = None, query=None, upload_path: str = None, override_names: dict = None, before_save=None, after_save=None):
         if update_form.is_post_data() and update_form.is_valid_data(form_data=data):
             model = self.only_update(update_form=update_form, model_id=model_id, existing_model=existing_model, data=data, query=query, upload_path=upload_path, override_names=override_names)
             flash(response_message, "success")
