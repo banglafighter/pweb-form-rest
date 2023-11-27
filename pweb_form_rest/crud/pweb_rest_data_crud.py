@@ -50,8 +50,8 @@ class RESTDataCRUD(PWebCRUDCommon):
         data_list = self.read_all(query=query, search_fields=search_fields, sort_field=sort_field, sort_order=sort_order, enable_pagination=False)
         return self.response_maker.list_data_type_response(data_list, response_dto=response_dto)
 
-    def upload_file_data(self, request_dto: PWebDataDTO, upload_path, response_dto: PWebDataDTO = None, override_names: dict = None, response_message: str = ComFRMessage.create_success, form_data=None):
-        return self.file_data_crud.upload_file_data(request_dto=request_dto, upload_path=upload_path, response_dto=response_dto, override_names=override_names, response_message=response_message, form_data=form_data)
+    def upload_file_data(self, request_dto: PWebDataDTO, upload_path, response_dto: PWebDataDTO = None, override_names: dict = None, response_message: str = ComFRMessage.create_success, form_data=None, before_save=None, after_save=None):
+        return self.file_data_crud.upload_file_data(request_dto=request_dto, upload_path=upload_path, response_dto=response_dto, override_names=override_names, response_message=response_message, form_data=form_data, before_save=before_save, after_save=after_save)
 
-    def update_upload_file_data(self, request_dto: PWebDataDTO, upload_path, response_dto: PWebDataDTO = None, override_names: dict = None, response_message: str = ComFRMessage.update_success, existing_model=None, form_data: dict = None, query=None):
-        return self.file_data_crud.update_upload_file_data(request_dto=request_dto, upload_path=upload_path, response_dto=response_dto, override_names=override_names, response_message=response_message, existing_model=existing_model, form_data=form_data, query=query)
+    def update_upload_file_data(self, request_dto: PWebDataDTO, upload_path, response_dto: PWebDataDTO = None, override_names: dict = None, response_message: str = ComFRMessage.update_success, existing_model=None, form_data: dict = None, query=None, before_save=None, after_save=None):
+        return self.file_data_crud.update_upload_file_data(request_dto=request_dto, upload_path=upload_path, response_dto=response_dto, override_names=override_names, response_message=response_message, existing_model=existing_model, form_data=form_data, query=query, before_save=before_save, after_save=after_save)
