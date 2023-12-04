@@ -1,7 +1,7 @@
 from pweb_form_rest.crud.pweb_crud import PWebCRUD
 from pweb_form_rest.crud.pweb_response_maker import ResponseMaker
 from pweb_form_rest.schema.pweb_rest_schema import PWebDataDTO
-from pweb_orm import PWebBaseModel
+from pweb_orm import PWebBaseModel, pweb_orm, make_transient
 
 
 class PWebCRUDCommon:
@@ -77,3 +77,15 @@ class PWebCRUDCommon:
 
     def save_all(self, model_list: list):
         self.model.save_all(model_list)
+
+    def clone(self, model, none_props: list = None):
+        pweb_orm.session.expunge(model)
+        make_transient(model)
+
+        if not none_props:
+            none_props = []
+
+        for prop in ["id", "uuid", "created", "updated"] + none_props:
+            if hasattr(model, prop):
+                setattr(model, prop, None)
+        return model
