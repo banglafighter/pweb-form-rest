@@ -55,11 +55,19 @@ class PWebCRUDCommon:
             existing_model = self.get_by_id(model_id, query=query, exception=True)
         return self.save(data=data, request_dto=request_dto, existing_model=existing_model, before_save=before_save, after_save=after_save)
 
-    def soft_remove(self, model_id: int, query=None, exception=True):
+    def soft_remove(self, model_id: int, query=None, exception=True, before_delete=None, after_delete=None):
         existing_model = self.get_by_id(model_id, exception=exception, query=query)
+
+        if before_delete and callable(before_delete):
+            before_delete(model_id=model_id, model=existing_model)
+
         if existing_model and hasattr(existing_model, "isDeleted"):
             existing_model.isDeleted = True
             existing_model.save()
+
+            if after_delete and callable(after_delete):
+                after_delete(model_id=model_id, model=existing_model)
+
             return True
         return False
 

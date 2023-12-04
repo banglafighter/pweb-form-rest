@@ -34,8 +34,8 @@ class RESTDataCRUD(PWebCRUDCommon):
         model = self.update_and_get_model(request_dto=request_dto, existing_model=existing_model, query=query, data=data, before_save=before_save, after_save=after_save)
         return self.message_or_data_response(model, response_dto, response_message)
 
-    def delete(self, model_id: int, response_message: str = ComFRMessage.delete_success, query=None):
-        self.soft_remove(model_id=model_id, query=query)
+    def delete(self, model_id: int, response_message: str = ComFRMessage.delete_success, query=None, before_delete=None, after_delete=None):
+        self.soft_remove(model_id=model_id, query=query, before_delete=before_delete, after_delete=after_delete)
         return self.response_maker.success_message(response_message)
 
     def hard_delete(self, model_id: int, response_message: str = ComFRMessage.delete_success, query=None):
