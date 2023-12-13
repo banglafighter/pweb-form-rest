@@ -125,11 +125,13 @@ class FormDataCRUD(PWebCRUDCommon):
             flash('Invalid data', 'error')
             return redirect(redirect_url)
 
-        if display_from:
-            data = display_from.dump(data)
-
         if not params:
             params = {}
+
+        if display_from:
+            data = display_from.dump(data)
+            display_from.set_dict_value(data)
+            params["form"] = display_from.definition
 
         params.update({"data": data})
         return self.render(view_name=view_name, params=params)
