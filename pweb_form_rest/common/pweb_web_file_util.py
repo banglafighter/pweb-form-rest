@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 from werkzeug.datastructures import FileStorage
 from ppy_file_text import StringUtil
 
@@ -43,6 +45,13 @@ class PWebWebFileUtil:
             file_name = StringUtil.camelcase_to(file_name, "-")
             file_name = StringUtil.find_and_replace_with(file_name, "_", "-")
             file_name = StringUtil.replace_space_with(file_name, "-")
+            file_name_only = PWebWebFileUtil.get_file_name_only(file_name)
+            file_name_only = StringUtil.remove_special_character(file_name_only)
+            file_name_only = StringUtil.replace_multiple_occurrence_to_single_with(text=file_name_only, to="-")
+            file_name_only = file_name_only.strip("-")
+            file_name_only = file_name_only.rstrip("-")
+            file_extension = PWebWebFileUtil.get_file_extension(file_name)
+            file_name = f"{file_name_only}.{file_extension}"
             file_name = file_name.lower()
         return file_name
 
@@ -50,3 +59,10 @@ class PWebWebFileUtil:
     def get_file_extension(filename):
         if '.' in filename:
             return filename.rsplit('.', 1)[1].lower()
+
+    @staticmethod
+    def get_file_name_only(filename):
+        if filename:
+            path = Path(filename)
+            return path.stem
+        return filename
