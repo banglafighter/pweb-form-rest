@@ -197,3 +197,6 @@ class PWebCRUD:
         if result and exception:
             raise form_rest_exception.error_details_exception("Unique filed error", details={field: message})
 
+    def update_all(self, query, name_values: dict):
+        query.update(name_values)
+        pweb_orm.session.commit()
