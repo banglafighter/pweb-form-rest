@@ -55,3 +55,9 @@ class RESTDataCRUD(PWebCRUDCommon):
 
     def update_upload_file_data(self, request_dto: PWebDataDTO, upload_path, response_dto: PWebDataDTO = None, override_names: dict = None, response_message: str = ComFRMessage.update_success, existing_model=None, form_data: dict = None, query=None, before_save=None, after_save=None):
         return self.file_data_crud.update_upload_file_data(request_dto=request_dto, upload_path=upload_path, response_dto=response_dto, override_names=override_names, response_message=response_message, existing_model=existing_model, form_data=form_data, query=query, before_save=before_save, after_save=after_save)
+
+    def upload_file_data_save(self, request_dto: PWebDataDTO, upload_path, override_names: dict = None, form_data=None, before_save=None, after_save=None):
+        return self.file_data_crud.upload_file_data_and_save(request_dto=request_dto, upload_path=upload_path, override_names=override_names, form_data=form_data, before_save=before_save, after_save=after_save)
+
+    def update_upload_file_data_save(self, request_dto: PWebDataDTO, upload_path, override_names: dict = None, existing_model=None, form_data: dict = None, query=None, before_save=None, after_save=None):
+        return self.file_data_crud.update_upload_file_data_save(request_dto=request_dto, upload_path=upload_path, override_names=override_names, existing_model=existing_model, form_data=form_data, query=query, before_save=before_save, after_save=after_save)
