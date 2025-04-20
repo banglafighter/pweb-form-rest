@@ -4,8 +4,8 @@ from pweb_form_rest.data.pweb_response_status import PWebResponseCode, PWebHTTPC
 
 
 class FormRESTException(PPyCException):
-    messageResponse: PWebMessageResponse
-    errorResponse: PWebErrorResponse
+    messageResponse: PWebMessageResponse = None
+    errorResponse: PWebErrorResponse = None
 
     def __init__(self, message=None, exception_type: str = None):
         self._set_super(message, exception_type)
@@ -31,7 +31,7 @@ class FormRESTException(PPyCException):
         response.status = PWebResponseStatus.error
         response.http_code = http_code
         response.error = details
-        self.messageResponse = response
+        self.errorResponse = response
         return self
 
     def process_validation_exception(self, errors: dict, message: str):
