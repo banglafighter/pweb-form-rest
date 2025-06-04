@@ -21,6 +21,7 @@ class FormRESTException(PPyCException):
         response.status = PWebResponseStatus.error
         response.http_code = http_code
         self.messageResponse = response
+        self.errorResponse = None
         return self
 
     def error_details_exception(self, message: str, details: dict, code=PWebResponseCode.error, http_code=PWebHTTPCode.OK):
@@ -32,6 +33,7 @@ class FormRESTException(PPyCException):
         response.http_code = http_code
         response.error = details
         self.errorResponse = response
+        self.messageResponse = None
         return self
 
     def process_validation_exception(self, errors: dict, message: str):
